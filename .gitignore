@@ -1,9 +1,11 @@
 # terraform
-./terraform
+.terraform/
 *.tfstate
 *.tfstate.*
 *.tfvars
 !*.tfvars.example
+.tfplan
+tfplan
 
 # Fichiers générés
 ansible/inventory/hosts.ini

@@ -1,0 +1,5 @@
+nodes = {
+  "k8s-cp-1"     = { vm_id = 201, ip = "192.168.1.21", cores = 2, memory = 4096, disk = 40, role = "control-plane" }
+  "k8s-worker-1" = { vm_id = 202, ip = "192.168.1.22", cores = 2, memory = 6144, disk = 80, role = "worker" }
+  "k8s-worker-2" = { vm_id = 203, ip = "192.168.1.23", cores = 2, memory = 6144, disk = 80, role = "worker" }
+}
