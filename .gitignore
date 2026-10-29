@@ -1,0 +1,16 @@
+# terraform
+./terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+
+# Fichiers générés
+ansible/inventory/hosts.ini
+kubeconfig
+
+# Secrets locaux
+.envrc
+!.envrc.example
+*.pem
+*.key
