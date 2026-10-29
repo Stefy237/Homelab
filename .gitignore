@@ -10,6 +10,7 @@ tfplan
 # Fichiers générés
 ansible/inventory/hosts.ini
 kubeconfig
+.ansible/
 
 # Secrets locaux
 .envrc

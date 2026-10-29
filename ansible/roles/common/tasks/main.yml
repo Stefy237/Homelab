@@ -1,0 +1,32 @@
+- name: Mettre à jour le système
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+    upgrade: dist
+
+- name: Installer les paquets de base
+  ansible.builtin.apt:
+    name: [curl, gpg, ca-certificates, chrony, unattended-upgrades]
+    state: present
+
+- name: Définir le fuseau horaire
+  community.general.timezone:
+    name: "{{ timezone }}"
+
+- name: Activer les mises à jour de sécurité automatiques
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+    mode: "0644"
+
+- name: Durcir SSH (clé uniquement, pas de root)
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/10-hardening.conf
+    content: |
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin no
+    mode: "0644"
+  notify: Redémarrer SSH
