@@ -1,20 +1,29 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.109.3
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
+
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.38.0
     hooks:
       - id: yamllint
+
   - repo: https://github.com/ansible/ansible-lint
     rev: v26.10.1
     hooks:
       - id: ansible-lint
         language_version: python3
         additional_dependencies:
-          - ansible-core>=2.19.0
+          - ansible-core>=2.16.0
+
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.30.0
     hooks:

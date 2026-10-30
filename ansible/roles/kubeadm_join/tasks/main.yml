@@ -1,0 +1,4 @@
+- name: Rejoindre le cluster
+  ansible.builtin.command: "{{ hostvars[groups['control_plane'][0]].kubeadm_init_join_cmd.stdout }}"
+  args:
+    creates: /etc/kubernetes/kubelet.conf

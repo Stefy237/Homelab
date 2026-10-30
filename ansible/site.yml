@@ -1,6 +1,14 @@
 - name: Préparer tous les nœuds
   hosts: k8s_cluster
   become: true
-  roles:
-    - common
-    - containerd
+  roles: [common, containerd, kubernetes]
+
+- name: Initialiser le control plane
+  hosts: control_plane
+  become: true
+  roles: [kubeadm_init]
+
+- name: Faire rejoindre les workers
+  hosts: workers
+  become: true
+  roles: [kubeadm_join]
