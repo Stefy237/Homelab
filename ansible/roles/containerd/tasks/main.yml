@@ -50,6 +50,13 @@
   args:
     creates: /etc/containerd/config.toml
 
+- name: Utiliser le répertoire CNI standard (/opt/cni/bin)
+  ansible.builtin.replace:
+    path: /etc/containerd/config.toml
+    regexp: '/usr/lib/cni'
+    replace: '/opt/cni/bin'
+  notify: Redémarrer containerd
+
 - name: Utiliser le driver cgroup systemd
   ansible.builtin.replace:
     path: /etc/containerd/config.toml

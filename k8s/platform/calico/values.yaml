@@ -1,0 +1,7 @@
+installation:
+  calicoNetwork:
+    ipPools:
+      - cidr: 10.244.0.0/16          # identique à pod_cidr de kubeadm
+        encapsulation: VXLANCrossSubnet
+        natOutgoing: Enabled
+        nodeSelector: all()
