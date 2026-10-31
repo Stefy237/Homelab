@@ -45,23 +45,11 @@
     state: directory
     mode: "0755"
 
-- name: Générer la configuration par défaut
-  ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
-  args:
-    creates: /etc/containerd/config.toml
-
-- name: Utiliser le répertoire CNI standard (/opt/cni/bin)
-  ansible.builtin.replace:
-    path: /etc/containerd/config.toml
-    regexp: '/usr/lib/cni'
-    replace: '/opt/cni/bin'
-  notify: Redémarrer containerd
-
-- name: Utiliser le driver cgroup systemd
-  ansible.builtin.replace:
-    path: /etc/containerd/config.toml
-    regexp: 'SystemdCgroup = false'
-    replace: 'SystemdCgroup = true'
+- name: Configurer containerd
+  ansible.builtin.template:
+    src: config.toml.j2
+    dest: /etc/containerd/config.toml
+    mode: "0644"
   notify: Redémarrer containerd
 
 - name: Activer containerd
@@ -69,3 +57,12 @@
     name: containerd
     enabled: true
     state: started
+
+- name: Appliquer la configuration de containerd maintenant
+  ansible.builtin.meta: flush_handlers
+
+- name: Vérifier que containerd utilise le driver cgroup systemd
+  ansible.builtin.command: containerd config dump
+  register: containerd_config_dump
+  changed_when: false
+  failed_when: "'SystemdCgroup = true' not in containerd_config_dump.stdout"

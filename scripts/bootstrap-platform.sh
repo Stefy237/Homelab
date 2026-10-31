@@ -17,18 +17,16 @@ helm template calico-crds projectcalico/crd.projectcalico.org.v1 \
   | kubectl apply --server-side --force-conflicts -f -
 kubectl wait --for=condition=Established crd --all --timeout=60s
 
-if ! helm status calico -n tigera-operator >/dev/null 2>&1; then
-  helm upgrade --install calico projectcalico/tigera-operator \
-    --version "$CALICO_VERSION" \
-    --namespace tigera-operator --create-namespace \
-    -f k8s/platform/calico/values.yaml
-fi
+helm upgrade --install calico projectcalico/tigera-operator \
+  --version "$CALICO_VERSION" \
+  --namespace tigera-operator --create-namespace \
+  -f k8s/platform/calico/values.yaml
 kubectl wait --for=condition=Ready nodes --all --timeout=300s
 
 # 2. LoadBalancer
 helm upgrade --install metallb metallb/metallb \
   --version "$METALLB_VERSION" \
-  --namespace metallb-system --create-namespace --wait
+  --namespace metallb-system --create-namespace --wait --timeout 10m
 kubectl apply -f k8s/platform/metallb/pool.yaml
 
 # 3. Stockage

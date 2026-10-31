@@ -1,3 +1,16 @@
+- name: Attendre que les VMs soient prêtes
+  hosts: k8s_cluster
+  gather_facts: false
+  tasks:
+    - name: Attendre SSH
+      ansible.builtin.wait_for_connection:
+        timeout: 600
+    - name: Attendre la fin de cloud-init
+      ansible.builtin.command: cloud-init status --wait
+      register: cloud_init_status
+      changed_when: false
+      failed_when: cloud_init_status.rc not in [0, 2]
+
 - name: Préparer tous les nœuds
   hosts: k8s_cluster
   become: true
