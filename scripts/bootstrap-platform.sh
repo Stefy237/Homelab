@@ -21,7 +21,7 @@ helm upgrade --install calico projectcalico/tigera-operator \
   --version "$CALICO_VERSION" \
   --namespace tigera-operator --create-namespace \
   -f k8s/platform/calico/values.yaml
-kubectl wait --for=condition=Ready nodes --all --timeout=300s
+kubectl wait --for=condition=Ready nodes --all --timeout=900s
 
 # 2. LoadBalancer
 helm upgrade --install metallb metallb/metallb \
